@@ -32,18 +32,27 @@
 			font-weight: bold;
 			font-size: 20pt;
 		}
+
+		a {
+			color: black;
+		}
 	</style>
 </head>
 
 <body>
-	<h1>doc2date</h1>
 	<div id="main">
+		<h1>doc2date</h1>
+		
+		<a href="https://github.com/bencwallace/doc2date/blob/master/doc2date.ipynb" target="_blank">Read more</a><br /><br />
+		
 		<form action="{{ url_for('predict') }}" method="post" />
 			<textarea name="text" required="required">{{ text }}</textarea>
 			<br /><br />
 			<button type="submit">Date</button>
 		</form>
+		
 		<br />
+		
 		{% if prediction is defined %}
 			<span id="prediction">Predicted date: {{ prediction }}</span>
 		{% endif %}
