@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import json
+import re
 import sys
 
 def make_toc(file_in, file_out):
@@ -10,10 +11,11 @@ def make_toc(file_in, file_out):
     md_cells = filter(lambda c: c['cell_type'] == 'markdown', cells)
     md_sources = map(lambda c: c['source'], md_cells)
     
+    pattern = re.compile('(?<!#)##(?!#)')
     headings = []
     for lines in md_sources:
         for line in lines:
-            if line.startswith('##'):
+            if pattern.match(line):
                 headings.append(line.strip('#').strip())
 
     with open(file_out, 'w') as f:
