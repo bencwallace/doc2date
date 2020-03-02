@@ -1,7 +1,0 @@
-digraph G {
-	graph [rankdir=LR]
-	Vectorizer, Transformer, Scaler, Predictor [shape=box]
-	Text -> Vectorizer [style=dashed]
-	Vectorizer -> Transformer -> Scaler -> Predictor
-	Predictor -> Year [style=dashed]
-}
