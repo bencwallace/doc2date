@@ -6,6 +6,6 @@ Unsupersived learning methods have also been applied to the analysis of document
 
 But what about document *regression*? In this notebook, we investigate the problem of learning the date of a publication from the text contained therein. Since the target space, a range of years, can be viewed as a continuum, this problem presents a natural test case for applying regression techniques to document analysis.
 
-[READ ABOUT IT](doc2date.ipynb)
+[Read more about it](notebooks/doc2date-00.ipynb)
 
-[TRY IT OUT](bcwallace.com/doc2date)
+[Try it out](bcwallace.com/doc2date)
