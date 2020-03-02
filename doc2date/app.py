@@ -3,24 +3,17 @@ import pickle
 from flask import Flask, render_template, request, url_for
 
 from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.preprocessing import StandardScaler
-
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import FunctionTransformer, StandardScaler
 
 app = Flask(__name__)
 
-# model components
+# load model components
 with open('pickle/tokenizer.pickle', 'rb') as f:
     tokenizer = pickle.load(f)
 
-# convert SpaCy tokenizer to a function str -> list of str
-def tok(text):
-    return [str(t) for t in tokenizer(text)]
-
 with open('pickle/word2token.pickle', 'rb') as f:
     word2token = pickle.load(f)
-
-# build vectorizer from vocabulary and tokenizer
-vectorizer = CountVectorizer(vocabulary=word2token, tokenizer=tok)
 
 with open('pickle/transformer.pickle', 'rb') as f:
     transformer = pickle.load(f)
@@ -31,6 +24,25 @@ with open('pickle/scaler.pickle', 'rb') as f:
 with open('pickle/predictor.pickle', 'rb') as f:
     predictor = pickle.load(f)
 
+# build pipeline components
+
+tolist = FunctionTransformer(lambda x: [x])
+
+todense = FunctionTransformer(lambda x: x.todense())
+
+def tok(text):
+    return [str(t) for t in tokenizer(text)]
+
+cv = CountVectorizer(vocabulary=word2token, tokenizer=tok)
+
+# build prediction pipeline
+pipe = Pipeline([('tolist', tolist),
+                 ('count', cv),
+                 ('tfidf', transformer),
+                 ('densify', todense),
+                 ('scale', scaler),
+                 ('predict', predictor)])
+
 # app contents
 @app.route('/')
 def home():
@@ -40,22 +52,9 @@ def home():
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    # get text
     text = request.form['text']
-
-    # count occurences
-    X = vectorizer.transform([text])
-
-    # transform to tf-idf
-    X = transformer.transform(X)
-
-    # standardize
-    X = scaler.transform(X.todense())
-
-    # predict
-    y = predictor.predict(X)
-
-    return render_template('index.html', prediction=int(y))
+    y = int(pipe.predict(text)[0])
+    return render_template('index.html', prediction=y, text=text)
 
 # entry point
 if __name__ == '__main__':

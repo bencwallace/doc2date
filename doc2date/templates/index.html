@@ -36,14 +36,37 @@
 		a {
 			color: black;
 		}
+
+		#about {
+			display: none;
+		}
 	</style>
+
+	<script>
+		function about() {
+			about = document.getElementById("about");
+			about.style.display = "inline";
+		}
+	</script>
 </head>
 
 <body>
 	<div id="main">
 		<h1>doc2date</h1>
 		
-		<a href="https://github.com/bencwallace/doc2date/blob/master/doc2date.ipynb" target="_blank">Read more</a><br /><br />
+		<!-- <a href="https://github.com/bencwallace/doc2date/blob/master/doc2date.ipynb" target="_blank">Read more</a> -->
+		<a href="#" onclick="about()">About</a><br /><br />
+		<div id="about">
+			doc2date is a prediction engine that tries to guess the publication date of a document. It is trained on
+			works of fiction over the period 1700-1922 and works best on text segments from such works.<br /><br />
+
+			doc2date is open source. To learn more about how doc2date was created, take a look at the
+			<a href="https://github.com/bencwallace/doc2date">github</a> repository.<br /><br />
+
+			To learn more, you can contact me (Benjamin Wallace) at me [at] bcwallace [dot] com or visit my
+			<a href="https://bcwallace.com">website</a>.
+			<br /><br />
+		</div>
 		
 		<form action="{{ url_for('predict') }}" method="post" />
 			<textarea name="text" required="required">{{ text }}</textarea>
