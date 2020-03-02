@@ -1,7 +1,9 @@
+#!/usr/bin/env python3
 import json
+import sys
 
-if __name__ == '__main__':
-    with open('doc2date.ipynb', 'r') as f:
+def make_toc(file_in, file_out):
+    with open(file_in, 'r') as f:
         data = json.loads(f.read())
 
     cells = data['cells']
@@ -14,8 +16,14 @@ if __name__ == '__main__':
             if line.startswith('##'):
                 headings.append(line.strip('#').strip())
 
-    with open('toc.md', 'w') as f:
+    with open(file_out, 'w') as f:
         f.write('## Contents\n\n')
         for i, heading in enumerate(headings):
             dest = '-'.join(heading.split())
             f.write(f'{i+1}. [{heading}](#{dest})\n')
+
+
+if __name__ == '__main__':
+    files = [(f'doc2date-0{i}.ipynb', f'toc-0{i}.md') for i in range(1, 4)]
+    for file_in, file_out in files:
+        make_toc(file_in, file_out)
