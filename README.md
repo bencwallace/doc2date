@@ -8,4 +8,4 @@ But what about document *regression*? In this notebook, we investigate the probl
 
 [Read more about it](notebooks/doc2date-00.ipynb)
 
-[Try it out](bcwallace.com/doc2date)
+[Try it out](https://bcwallace.com/doc2date)
