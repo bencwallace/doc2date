@@ -8,7 +8,8 @@ from sklearn.preprocessing import FunctionTransformer, StandardScaler
 
 app = Flask(__name__)
 
-# load model components
+# Load model components
+
 with open('pickle/tokenizer.pickle', 'rb') as f:
     tokenizer = pickle.load(f)
 
@@ -24,7 +25,7 @@ with open('pickle/scaler.pickle', 'rb') as f:
 with open('pickle/predictor.pickle', 'rb') as f:
     predictor = pickle.load(f)
 
-# build pipeline components
+# Build pipeline
 
 tolist = FunctionTransformer(lambda x: [x])
 
@@ -35,7 +36,6 @@ def tok(text):
 
 cv = CountVectorizer(vocabulary=word2token, tokenizer=tok)
 
-# build prediction pipeline
 pipe = Pipeline([('tolist', tolist),
                  ('count', cv),
                  ('tfidf', transformer),
@@ -43,7 +43,8 @@ pipe = Pipeline([('tolist', tolist),
                  ('scale', scaler),
                  ('predict', predictor)])
 
-# app contents
+# App contents
+
 @app.route('/')
 def home():
     with open('static/moby-dick.txt', 'r') as f:
